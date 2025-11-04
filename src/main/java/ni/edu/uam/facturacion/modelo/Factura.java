@@ -1,6 +1,7 @@
 package ni.edu.uam.facturacion.modelo;
 
 import com.tuempresa.facturacion.calculadores.CalculadorSiguienteNumeroParaAnyo;
+import com.tuempresa.facturacion.calculadores.Detalle;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
@@ -10,10 +11,16 @@ import org.openxava.calculators.CurrentYearCalculator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Collection;
 
 @Entity
 @Getter
 @Setter
+@View(members= // Esta vista no tiene nombre, por tanto será la vista usada por defecto
+        "anyo, numero, fecha;" + // Separados por coma significa en la misma línea
+                "cliente;" + // Punto y coma significa nueva línea
+                "detalles;" +
+                "observaciones")
 public class Factura {
     @Id
     @GeneratedValue(generator="system-uuid")
@@ -33,19 +40,20 @@ public class Factura {
             // en el calculador antes de llamar a calculate()
     )
     int numero;
-    //@Column(length=6)
-    //int numero;
+    //@Column(length=6) int numero;
 
     @Required
     @DefaultValueCalculator(CurrentLocalDateCalculator.class) // Fecha actual
     LocalDate fecha;
 
-    @ManyToOne(fetch=FetchType.LAZY, optional=false) // El cliente es obligatorio
+    @ManyToOne(fetch=FetchType.LAZY, optional=false)
+    @ReferenceView("Simple") // La vista llamada 'Simple' se usará para visualizar esta referencia
     Cliente cliente;
 
     @TextArea
     String observaciones;
 
+    @ListProperties("producto.numero, producto.descripcion, cantidad")
     @ElementCollection
     Collection<Detalle> detalles;
 
