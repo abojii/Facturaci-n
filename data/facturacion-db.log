@@ -1,2 +1,5 @@
 /*C3*/SET SCHEMA PUBLIC
 DISCONNECT
+/*C4*/SET SCHEMA PUBLIC
+alter table Factura add column cliente_numero integer not null
+alter table Factura add constraint FKmd10sg74xw8mq3d2m9k2kxual foreign key (cliente_numero) references Cliente

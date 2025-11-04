@@ -5,15 +5,14 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+
+
 
 @Embeddable
 @Getter
 @Setter
 public class Direccion {
-    @Id
-    private Long id;
+
     @Column(length=30)
     String viaPublica;
 
