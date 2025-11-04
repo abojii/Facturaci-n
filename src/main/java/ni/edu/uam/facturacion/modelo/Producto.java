@@ -1,5 +1,6 @@
 package ni.edu.uam.facturacion.modelo;
 
+import com.tuempresa.facturacion.calculadores.Autor;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.logging.log4j.core.config.plugins.validation.constraints.Required;
@@ -23,6 +24,10 @@ public class Producto {
     @Required
     String descripcion;
 
+    @ManyToOne(fetch=FetchType.LAZY)
+    @DescriptionsList
+    Autor autor;
+
     @ManyToOne(
             fetch = FetchType.LAZY,
             optional = true)
@@ -34,6 +39,8 @@ public class Producto {
     @Files
     @Column(length=32)
     String fotos;
+
+
 
     @TextArea
     String observaciones;
